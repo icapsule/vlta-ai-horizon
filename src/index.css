@@ -197,3 +197,27 @@ html {
     scroll-behavior: smooth;
     background-color: #000; /* 兜底黑色 */
 }
+
+/* === 视觉穿透补丁：强制透出底层的数字流光 === */
+
+/* 1. 让 React 根节点透明 */
+#root {
+    background: transparent !important;
+}
+
+/* 2. 让 Lovable 生成的背景层透明化 */
+/* 重点解决截图中的 bg-gradient-to-b 和 from-background */
+main, 
+section, 
+.bg-background, 
+.from-background {
+    background-color: transparent !important;
+    background-image: none !important;
+    --tw-gradient-from: transparent !important;
+    --tw-gradient-to: transparent !important;
+}
+
+/* 3. 确保你的内容容器依然保持合适的高度，但背景是空的 */
+.min-h-screen {
+    background: transparent !important;
+}
