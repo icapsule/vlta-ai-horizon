@@ -150,74 +150,54 @@
   }
 }
 
-/* === 2026 DIGITAL FLOW ARCHITECTURE (INCREMENTAL UPDATE) === */
+/* === 2026 VLTA DEEP SPACE: CONSOLIDATED INCREMENTAL UPDATE === */
 
-/* 创建动态深空背景层 */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* 深空色调：极黑、深靛蓝与微光紫 */
-    background: radial-gradient(circle at 50% 50%, #0a0a0c 0%, #000000 100%);
-    z-index: -2; /* 确保在所有内容之下 */
-}
-
-/* 创建流光与数字网格层 */
-body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        /* 数字网格线 */
-        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(32, 32, 32, 0.2) 50%),
-        linear-gradient(90deg, rgba(18, 16, 16, 0) 50%, rgba(32, 32, 32, 0.2) 50%),
-        /* 动态流光梯度 */
-        radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.03) 0%, transparent 50%);
-    background-size: 4px 4px, 4px 4px, 100% 100%;
-    z-index: -1;
-    pointer-events: none;
-    animation: spaceFlow 20s ease-in-out infinite;
-    opacity: 0.6;
-}
-
-/* 呼吸感背景动画 */
-@keyframes spaceFlow {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.05); opacity: 0.8; }
-}
-
-/* 针对现代 UI 的平滑滚动优化 */
-html {
-    scroll-behavior: smooth;
-    background-color: #000; /* 兜底黑色 */
-}
-
-/* === 视觉穿透补丁：强制透出底层的数字流光 === */
-
-/* 1. 让 React 根节点透明 */
-#root {
-    background: transparent !important;
-}
-
-/* 2. 让 Lovable 生成的背景层透明化 */
-/* 重点解决截图中的 bg-gradient-to-b 和 from-background */
+/* 1. 穿透补丁：强制透明化所有阻挡视线的黑色背景层 */
+#root, 
 main, 
 section, 
-.bg-background, 
-.from-background {
+div[class*="bg-background"], 
+div[class*="from-background"],
+canvas { /* 针对你截图中的粒子画布进行透明化处理 */
     background-color: transparent !important;
     background-image: none !important;
     --tw-gradient-from: transparent !important;
     --tw-gradient-to: transparent !important;
+    opacity: 0.8; /* 让粒子画布也变半透明，产生叠加美感 */
 }
 
-/* 3. 确保你的内容容器依然保持合适的高度，但背景是空的 */
-.min-h-screen {
-    background: transparent !important;
+/* 2. 底层：深邃星空底色 */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, #0d0d1a 0%, #000000 100%) !important;
+    z-index: -2;
+}
+
+/* 3. 中层：数字网格与鼠标追踪流光 */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: 
+        /* 数字网格线：稍微加粗，增强科技感 */
+        linear-gradient(rgba(40, 40, 40, 0) 50%, rgba(60, 150, 255, 0.08) 50%),
+        linear-gradient(90deg, rgba(40, 40, 40, 0) 50%, rgba(60, 150, 255, 0.08) 50%),
+        /* 交互流光：随鼠标移动的蓝色光环 */
+        radial-gradient(
+            circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+            rgba(0, 120, 255, 0.2) 0%, 
+            rgba(0, 80, 255, 0.05) 30%, 
+            transparent 70%
+        ) !important;
+    background-size: 30px 30px, 30px 30px, 100% 100% !important;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+/* 4. 优化文字可读性 */
+h1, h2, p {
+    text-shadow: 0 0 20px rgba(0,0,0,0.8); /* 确保背景动起来后文字依然清晰 */
 }
